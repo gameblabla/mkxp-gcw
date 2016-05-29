@@ -19,6 +19,8 @@
 ** along with mkxp.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define ARRAY_SIZE(obj) (sizeof(obj) / sizeof((obj)[0]))
+
 #include "binding-util.h"
 
 #include "sharedstate.h"

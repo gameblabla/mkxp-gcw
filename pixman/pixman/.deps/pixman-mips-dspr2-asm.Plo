@@ -1,0 +1,9 @@
+pixman-mips-dspr2-asm.lo: pixman-mips-dspr2-asm.S pixman-private.h \
+ /home/anonymous/Documents/Dev/gcw0-toolchain/usr/lib/gcc/mipsel-gcw0-linux-uclibc/4.9.1/include/float.h \
+ pixman-mips-dspr2-asm.h
+
+pixman-private.h:
+
+/home/anonymous/Documents/Dev/gcw0-toolchain/usr/lib/gcc/mipsel-gcw0-linux-uclibc/4.9.1/include/float.h:
+
+pixman-mips-dspr2-asm.h:

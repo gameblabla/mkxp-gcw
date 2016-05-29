@@ -1,0 +1,4 @@
+pixman-mips-memcpy-asm.lo: pixman-mips-memcpy-asm.S \
+ pixman-mips-dspr2-asm.h
+
+pixman-mips-dspr2-asm.h:

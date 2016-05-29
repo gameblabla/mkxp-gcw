@@ -19,6 +19,9 @@
 ** along with mkxp.  If not, see <http://www.gnu.org/licenses/>.
 */
 
+#define elementsN(obj) const size_t obj##N = ARRAY_SIZE(obj)
+#define ARRAY_SIZE(obj) (sizeof(obj) / sizeof((obj)[0]))
+
 #include "input.h"
 #include "sharedstate.h"
 #include "exception.h"

@@ -1,0 +1,43 @@
+PRGNAME     = mkxp
+
+# define regarding OS, which compiler to use
+TOOLCHAIN = 
+CC          = mipsel-linux-gcc
+CCP         = mipsel-linux-g++
+LD          = mipsel-linux-gcc
+
+# add SDL dependencies
+SDL_LIB     = -lSDL2
+SDL_INCLUDE =  -I/usr/include/pixman-1/ -ISDL_sound/decoders/timidity  -Iprefix-gcw/include/ruby-2.3.0 -Iprefix-gcw/include/ruby-2.3.0/mipsel-linux
+SDL_INCLUDE += -Isrc -I./xxd -DSOUND_SUPPORTS_WAV -DSOUND_SUPPORTS_OGG -DSOUND_SUPPORTS_MIDI -Isigc/adaptors -Isigc/functors -Isigc/tuple-utils
+SDL_INCLUDE += -ISDL_sound -Isigc++-gcw/include/sigc++-2.0 -Isigc++-gcw/lib/sigc++-2.0/include -Iphysfs/src -Ipixman-gcw/include/pixman-1
+SDL_INCLUDE += -I/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/AL -I/opt/gcw0-toolchain/usr/mipsel-gcw0-linux-uclibc/sysroot/usr/include/SDL2
+
+# change compilation / linking flag options
+F_OPTS		= -DBINDING_MRI -DGLES2_HEADER
+CC_OPTS		= -O0 -g $(F_OPTS)
+CFLAGS		= $(SDL_INCLUDE) $(CC_OPTS)
+CXXFLAGS	= -std=gnu++11 $(CFLAGS) 
+LDFLAGS     = $(SDL_LIB) ./pixman-gcw/lib/libpixman-1.a -lm -lstdc++ -lSDL2_image -lSDL2_ttf -lopenal -lz -lvorbisfile -lboost_program_options ./prefix-gcw/lib/libruby-static.a ./sigc++-gcw/lib/libsigc-2.0.a -ldl -lpthread -lcrypt
+
+# Files to be compiled
+SRCDIR    = ./src ./physfs/src ./SDL_sound ./binding-mri ./SDL_sound/decoders ./SDL_sound/decoders/timidity
+VPATH     = $(SRCDIR)
+SRC_C   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.c))
+SRC_CP   = $(foreach dir, $(SRCDIR), $(wildcard $(dir)/*.cpp))
+OBJ_C   = $(notdir $(patsubst %.c, %.o, $(SRC_C)))
+OBJ_CP   = $(notdir $(patsubst %.cpp, %.o, $(SRC_CP)))
+OBJS     = $(OBJ_C) $(OBJ_CP)
+
+# Rules to make executable
+$(PRGNAME): $(OBJS)  
+	$(LD) $(CFLAGS) -o $(PRGNAME) $^ $(LDFLAGS)
+
+$(OBJ_C) : %.o : %.c
+	$(CC) $(CFLAGS) -c -o $@ $<
+
+$(OBJ_CP) : %.o : %.cpp
+	$(CCP) $(CXXFLAGS) -c -o $@ $<
+
+clean:
+	rm -f $(PRGNAME) *.o
